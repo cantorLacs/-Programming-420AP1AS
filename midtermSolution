@@ -1,0 +1,185 @@
+
+const float aPrice = 3.35f;
+const float bPrice = 3.25f;
+const float cPrice = 4.80f;
+const float creamPrice = 0.75f;
+
+string name;
+string ansr;
+short aNum = 0;
+bool aNumIsValid;
+short b1Cout = 0;
+short b2Cout = 0;
+short cCout = 0;
+
+long cardNum;
+bool cardNumIsValid;
+
+short month;
+short year;
+bool dateIsValid;
+
+short CCV;
+bool CCVIsValid;
+
+
+float aTotal;
+float b1Total;
+float b2Total;
+float cTotal;
+float total;
+
+
+
+do
+{
+    Console.WriteLine("********** Welcome to B.Hive! **********\n\n\n");
+
+
+    Console.Write("Please enter your name: ");
+    name = Console.ReadLine();
+
+    do
+    {
+        Console.WriteLine($"\nWhat can I get you, {name}?\n");
+        Console.WriteLine("a. Turkish Coffee (3.35$) \nb. Double Espresso (3.25$) \nc. Spanish Latte (4.80$) ");
+        do
+        {
+            switch (Console.ReadLine().ToLower())
+            {
+                case "c":
+
+                    do
+                    {
+                        cCout++;
+                        Console.WriteLine($"One Spanish Latte added to your order.\nCurrent amount {cCout}");
+
+                        //"another Spanish Latte" validation
+                        do
+                        {
+                            Console.Write("Would you like to add another Spanish Latte? \n(y/n) ");
+                            ansr = Console.ReadLine().ToLower();
+                            Console.Write(ansr != "y" && ansr != "n" ? "invalid asnwer\nTry again\n\n" : "");
+                        } while (ansr != "y" && ansr != "n");
+
+
+                    } while (ansr == "y");
+                    Console.WriteLine($"You have added {cCout} Spanish Latte(s) to your order.");
+                    break;
+                case "b":
+
+                    do
+                    {
+
+
+                        //"Cream"  validation
+                        do
+                        {
+                            Console.Write("\nWould you like some Whipped Cream with your Double Espresso? \n(y/n) ");
+                            ansr = Console.ReadLine().ToLower();
+                            Console.Write(ansr != "y" && ansr != "n" ? "invalid asnwer\nTry again\n\n" : "");
+
+                        } while (ansr != "y" && ansr != "n");
+                        if (ansr == "y")
+                        {
+                            //"extra 0.75$"  validation
+                            do
+                            {
+                                Console.Write("\nThat’ll be an extra 0.75$. \nDo you want to proceed with the extra charge? \n(y/n) ");
+                                ansr = Console.ReadLine().ToLower();
+                                Console.Write(ansr != "y" && ansr != "n" ? "invalid asnwer\nTry again\n\n" : "");
+
+                            } while (ansr != "y" && ansr != "n");
+
+                            if (ansr == "y")
+                            {
+                                b2Cout++;
+                            }
+
+
+                        }
+                        if (ansr == "n")
+                        {
+                            b1Cout++;
+                        }
+
+                        Console.WriteLine($"One Double Espresso added to your order.\nCurrent amount {b1Cout + b2Cout}");
+
+                        Console.WriteLine("Would you like to add another Double Espresso?");
+                        ansr = Console.ReadLine().ToLower();
+                        Console.Write(ansr != "y" && ansr != "n" ? "Invalid answer\nTry again\n" : "");
+                    } while (ansr == "y");
+                    break;
+                case "a":
+
+                    do
+                    {
+                        Console.Write("How many Turkish Coffees would you like?\n(1-5): ");
+                        aNumIsValid = (Int16.TryParse(Console.ReadLine(), out aNum) && aNum >= 1 && aNum <= 5);
+                        Console.Write(!aNumIsValid ? "\nYou can only order between 1 and 5 Turkish Coffees\nTry again\n" : "");
+                    } while (!aNumIsValid);
+                    Console.WriteLine($"{aNum} Turkish Coffee(s) added to your order.  ");
+
+                    break;
+
+                default:
+                    Console.WriteLine("invalid\nTry again");
+                    break;
+            }
+
+        } while ((aNum + b1Cout + b2Cout + cCout) == 0);
+
+        Console.WriteLine("===\nWould you like to add another beverage to your order?\n(y/n) ");
+        do
+        {
+            ansr = Console.ReadLine().ToLower();
+            Console.WriteLine(ansr != "y" && ansr != "n" ? "Invalid answer\nTry again\n" : "");
+        } while (ansr != "y" && ansr != "n");
+
+    } while (ansr == "y");
+
+    aTotal = aNum * aPrice;
+    b1Total = b1Cout * bPrice;
+    b2Total = b2Cout * (bPrice + creamPrice);
+    cTotal = cCout * cPrice;
+    total = aTotal + b1Total + b2Total + cTotal;
+
+    Console.WriteLine("Your order summary:\n" +
+        $"{aNum} Turkish Coffees @ {aTotal}$ \n" +
+        $"{b1Cout + b2Cout} Double Espresso, {b2Cout} of them with Whipped Cream @ {b1Total + b2Total}$\n" +
+        $"{cCout}  Spanish Latte @ {cTotal}$ \n" +
+        $"Total = {total}$ ");
+
+    Console.WriteLine("\n\nPlease enter your 16-digits credit card number: ");
+    do
+    {
+        cardNumIsValid = Int64.TryParse(Console.ReadLine(), out cardNum) && cardNum >= 1000000000000000 && cardNum <= 9999999999999999;
+        Console.Write(!cardNumIsValid? "invalid card number. Make sure you enter the 16 digits of the card\n":"");
+    } while (!cardNumIsValid);
+
+    Console.WriteLine("Please enter the month (MM) and year (YY) of expiration – on separate lines:\n");
+    do
+    {
+        dateIsValid = short.TryParse(Console.ReadLine(), out month) 
+            && short.TryParse(Console.ReadLine(), out year)
+            && (month >= 11 && month <= 12 && year == 23 
+            || month >= 1 && month <= 11 && year == 28
+            || month >= 1 && month <= 12 && year > 23 && year < 28);
+        Console.Write(!dateIsValid? "Invalid date, \n" +
+            "Date must be between November 2023 and November 2028\n" +
+            "Try again\n" : "");
+
+    } while (!dateIsValid);
+
+    Console.WriteLine("Please enter your 3-digits CCV:  ");
+    do
+    {
+        CCVIsValid = Int16.TryParse(Console.ReadLine(), out CCV) && CCV >= 100 && CCV <= 999;
+        Console.Write(!CCVIsValid ? "invalid CCV\nTry again\n" : "");
+    } while (!CCVIsValid);
+
+    Console.WriteLine($"\n===\nThank you for visiting B.Hive, {name}!\n" +
+        "We will call your name when your order is ready.\n" +
+        " Have a great day! \n");
+
+} while (true);
