@@ -4,7 +4,7 @@ const float bPrice = 3.25f;
 const float cPrice = 4.80f;
 const float creamPrice = 0.75f;
 
-string name;
+string name = "";
 string ansr;
 short aNum = 0;
 bool aNumIsValid;
@@ -143,19 +143,20 @@ do
     Console.WriteLine("\n\nPlease enter your 16-digits credit card number: ");
     do
     {
-        cardNumIsValid = Int64.TryParse(Console.ReadLine(), out cardNum) && cardNum >= 1000000000000000 && cardNum <= 9999999999999999;
-        Console.Write(!cardNumIsValid? "invalid card number. Make sure you enter the 16 digits of the card\n":"");
+        ansr = Console.ReadLine();
+        cardNumIsValid = Int64.TryParse(ansr, out cardNum) && ansr.Length == 16;
+        Console.Write(!cardNumIsValid ? "invalid card number. Make sure you enter the 16 digits of the card\n" : "");
     } while (!cardNumIsValid);
 
     Console.WriteLine("Please enter the month (MM) and year (YY) of expiration – on separate lines:\n");
     do
     {
-        dateIsValid = short.TryParse(Console.ReadLine(), out month) 
+        dateIsValid = short.TryParse(Console.ReadLine(), out month)
             && short.TryParse(Console.ReadLine(), out year)
-            && (month >= 11 && month <= 12 && year == 23 
+            && (month >= 11 && month <= 12 && year == 23
             || month >= 1 && month <= 11 && year == 28
             || month >= 1 && month <= 12 && year > 23 && year < 28);
-        Console.Write(!dateIsValid? "Invalid date, \n" +
+        Console.Write(!dateIsValid ? "Invalid date, \n" +
             "Date must be between November 2023 and November 2028\n" +
             "Try again\n" : "");
 
@@ -164,7 +165,8 @@ do
     Console.WriteLine("Please enter your 3-digits CCV:  ");
     do
     {
-        CCVIsValid = Int16.TryParse(Console.ReadLine(), out CCV) && CCV >= 100 && CCV <= 999;
+        ansr = Console.ReadLine();
+        CCVIsValid = Int16.TryParse(ansr, out CCV) && ansr.Length == 3;
         Console.Write(!CCVIsValid ? "invalid CCV\nTry again\n" : "");
     } while (!CCVIsValid);
 
